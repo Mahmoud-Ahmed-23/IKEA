@@ -11,11 +11,14 @@ namespace LinkDev.IKEA.DAL.Presistance.Data
 {
 	public class ApplicationDbContext : DbContext
 	{
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+		//{
+		//	optionsBuilder.UseSqlServer("Server = .; Database = IKEA; Trusted_Connection = True; TrustServerCertificate = True");
+		//}
+		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
-			optionsBuilder.UseSqlServer("Server = .; Database = IKEA; Trusted_Connection = True; TrustServerCertificate = True");
 		}
-		
+
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
