@@ -1,4 +1,6 @@
+using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Presistance.Data;
+using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.PL
@@ -12,6 +14,9 @@ namespace LinkDev.IKEA.PL
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
+
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>(); 
 
             builder.Services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
             {

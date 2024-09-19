@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LinkDev.IKEA.DAL\LinkDev.IKEA.DAL.csproj" />
+    <ProjectReference Include="..\LinkDev.IKEA.BLL\LinkDev.IKEA.BLL.csproj" />
   </ItemGroup>
 
 </Project>
