@@ -9,7 +9,7 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.Departments
 {
 	public interface IDepartmentRepositry
 	{
-		IEnumerable<Department> GetAll(bool AsNoTracking);
+		IEnumerable<Department> GetAll(bool AsNoTracking = true);
 		Department? Get(int id);
 		int Add(Department department);
 		int Update(Department department);
