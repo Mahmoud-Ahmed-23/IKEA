@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers.Department
 {
-	public class DepartmentController : Controller
-	{
+    public class DepartmentController : Controller
+    {
 
-		private readonly IDepartmentService _departmentService;
-        private readonly ILogger _logger;
+        private readonly IDepartmentService _departmentService;
+        private readonly ILogger<DepartmentController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
 
 
-        public DepartmentController(IDepartmentService departmentService, ILogger logger, IWebHostEnvironment webHostEnvironment)
+        public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment webHostEnvironment)
         {
             _departmentService = departmentService;
             _logger = logger;
@@ -21,11 +21,11 @@ namespace LinkDev.IKEA.PL.Controllers.Department
         }
 
         [HttpGet]
-		public IActionResult Index()
-		{
-			var deparments = _departmentService.GetAllDepartments();
-			return View(deparments);
-		}
+        public IActionResult Index()
+        {
+            var deparments = _departmentService.GetAllDepartments();
+            return View(deparments);
+        }
 
         [HttpGet]
         public IActionResult Create()
@@ -71,7 +71,20 @@ namespace LinkDev.IKEA.PL.Controllers.Department
             }
         }
 
+        [HttpGet]
+        public IActionResult Details(int? id)
+        {
+            if (id is null)
+                return BadRequest();
 
+            var department = _departmentService.GetDepartmentById(id.Value);
+
+            if (department is null)
+                return NotFound();
+
+            return View(department);
+
+        }
 
 
 
