@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Presistance\Data\Seeds\" />
-    <Folder Include="Presistance\Reposatories\" />
   </ItemGroup>
 
   <ItemGroup>
