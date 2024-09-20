@@ -22,6 +22,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 			{
 				yield return new DepartmentToReturnDto
 				{
+					Id = department.Id,
 					Name = department.Name,
 					Code = department.Code,
 					Description = department.Description,
