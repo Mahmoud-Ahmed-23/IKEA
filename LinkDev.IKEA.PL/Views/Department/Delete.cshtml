@@ -1,0 +1,59 @@
+﻿@model DepartmentDetailsToReturnDto
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<h1>Are You Sure To Delete this Department</h1>
+
+<br />
+<br />
+
+<div class="row justify-content-center align-items-center flex-column">
+
+	<h1 class="col-6 my-4">Edit Department</h1>
+
+	<form asp-action="Edit" class="col-6">
+
+		<div asp-validation-summary="ModelOnly"></div>
+		<div class="form-group mb-3">
+
+			<div class="from-group col-6">
+				<label class="col-form-label" asp-for="Code"></label>
+				<input asp-for="Code" class="form-control" readonly />
+			</div>
+			<div class="from-group col-6">
+				<label class="col-form-label" asp-for="Name"></label>
+				<input asp-for="Name" class="form-control" />
+			</div>
+			<div class="from-group col-12">
+				<label class="col-form-label" asp-for="Description"></label>
+				<input asp-for="Description" class="form-control" />
+			</div>
+			<div class="from-group col-12">
+				<label class="col-form-label" asp-for="CreationDate"></label>
+				<input asp-for="CreationDate" class="form-control" />
+			</div>
+
+		</div>
+
+		<div class="mt-4">
+			<input type="submit" value="Save" class="btn btn-primary" />
+			<a asp-action="Index" class="btn btn-light">Cancel</a>
+		</div>
+
+	</form>
+
+</div>
+
+
+<div class="mt-4">
+
+	<form asp-action="Delete" asp-route-id="@Model.Id" class="mt-4">
+
+	<input type="submit" value="Delete" class="btn btn-danger" />
+
+	<a asp-action="Index" class="btn btn-secondary">Cancel</a>
+	</form>
+</div>
+
+
