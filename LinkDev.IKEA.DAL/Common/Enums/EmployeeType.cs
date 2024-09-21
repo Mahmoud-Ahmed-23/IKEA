@@ -8,7 +8,7 @@ namespace LinkDev.IKEA.DAL.Common.Enums
 {
 	public enum EmployeeType
 	{
-		PartTime=1,
+		PartTime = 1,
 		FullTime
 	}
 }

@@ -1,6 +1,7 @@
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.DAL.Presistance.Data;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
+using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
 using Microsoft.EntityFrameworkCore;
 
 namespace LinkDev.IKEA.PL
@@ -16,7 +17,8 @@ namespace LinkDev.IKEA.PL
 
             builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
 
-            builder.Services.AddScoped<IDepartmentService, DepartmentService>(); 
+            builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+            builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
 
             builder.Services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
             {
