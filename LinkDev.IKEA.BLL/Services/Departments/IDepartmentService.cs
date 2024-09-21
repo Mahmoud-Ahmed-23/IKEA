@@ -1,4 +1,4 @@
-﻿using LinkDev.IKEA.BLL.Models;
+﻿using LinkDev.IKEA.BLL.Models.Department;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
-	public interface IDepartmentService
+    public interface IDepartmentService
 	{
 		IEnumerable<DepartmentToReturnDto> GetAllDepartments();
 

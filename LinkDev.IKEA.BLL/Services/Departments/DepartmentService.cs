@@ -1,11 +1,11 @@
-﻿using LinkDev.IKEA.BLL.Models;
+﻿using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.DAL.Entities;
 using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
-	public class DepartmentService : IDepartmentService
+    public class DepartmentService : IDepartmentService
 	{
 		private readonly IDepartmentRepositry _departmentRepositry;
 

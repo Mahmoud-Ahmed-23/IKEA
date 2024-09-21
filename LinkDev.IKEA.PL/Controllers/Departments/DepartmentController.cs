@@ -1,4 +1,5 @@
 ﻿using LinkDev.IKEA.BLL.Models;
+using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
 using Microsoft.AspNetCore.Hosting;
@@ -6,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers.Department
 {
-	public class DepartmentController : Controller
+    public class DepartmentController : Controller
 	{
 
 		private readonly IDepartmentService _departmentService;
