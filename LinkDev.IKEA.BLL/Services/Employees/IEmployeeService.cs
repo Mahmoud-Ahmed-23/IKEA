@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
-    public interface IEmployeesService
+    public interface IEmployeeService
     {
         IEnumerable<EmployeeToReturnDto> GetAllEmployees();
 

@@ -9,6 +9,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 {
     public class DepartmentController : Controller
 	{
+		#region Service
 
 		private readonly IDepartmentService _departmentService;
 		private readonly ILogger<DepartmentController> _logger;
@@ -22,12 +23,22 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			_webHostEnvironment = webHostEnvironment;
 		}
 
+		#endregion
+
+
+		#region Index
+
 		[HttpGet]
 		public IActionResult Index()
 		{
 			var deparments = _departmentService.GetAllDepartments();
 			return View(deparments);
 		}
+
+		#endregion
+
+
+		#region Create
 
 		[HttpGet]
 		public IActionResult Create()
@@ -73,6 +84,11 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			}
 		}
 
+		#endregion
+
+
+		#region Details
+
 		[HttpGet]
 		public IActionResult Details(int? id)
 		{
@@ -87,6 +103,10 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			return View(department);
 		}
 
+		#endregion
+
+
+		#region Edit
 
 		[HttpGet]
 		public IActionResult Edit(int? id)
@@ -148,6 +168,11 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		}
 
+		#endregion
+
+		
+		#region Delete
+
 		[HttpGet]
 		public IActionResult Delete(int? id)
 		{
@@ -191,5 +216,6 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		}
 
+		#endregion
 	}
 }

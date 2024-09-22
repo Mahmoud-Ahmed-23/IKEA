@@ -1,7 +1,10 @@
-﻿@model DepartmentDetailsToReturnDto
+﻿﻿
+@model DepartmentDetailsToReturnDto
+
 @{
-	ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Delete";
 }
+
 
 <h1>Are you sure to delete Delete this Department</h1>
 
@@ -110,7 +113,7 @@
 
     <form asp-action="Delete" method="post" asp-route-id="@Model.Id" class="mt-4">
 
-        <input type="submit" value="Delete" class="btn btn-danger" />
+      <input type="submit" value="Delete" class="btn btn-danger" />
 
         <a asp-action="Index" class="btn btn-secondary"> Cancel </a>
 

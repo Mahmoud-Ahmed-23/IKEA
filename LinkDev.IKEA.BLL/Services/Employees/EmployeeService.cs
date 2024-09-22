@@ -4,7 +4,7 @@ using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
 
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
-    public class EmployeeService : IEmployeesService
+    public class EmployeeService : IEmployeeService
     {
 
         private readonly IEmployeeRepositry _employeeRepository;
