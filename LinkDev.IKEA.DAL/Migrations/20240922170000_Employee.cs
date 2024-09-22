@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace LinkDev.IKEA.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Employees : Migration
+    public partial class Employee : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

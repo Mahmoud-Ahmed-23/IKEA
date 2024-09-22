@@ -31,6 +31,7 @@ namespace LinkDev.IKEA.DAL.Presistance.Data.Configurations.Employees
 			builder.Property(E => E.CreatedOn).HasDefaultValueSql("GetDate()");
 
 			builder.Property(E => E.LastModifiedOn).HasComputedColumnSql("GetDate()");
+
 		}
 	}
 }

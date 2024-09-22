@@ -17,7 +17,7 @@ namespace LinkDev.IKEA.BLL.Models.Employee
         [Range(22, 30)]
         public int? Age { get; set; }
 
-        public string? Adress { get; set; }
+        public string? Address { get; set; }
         //[DataType(DataType.Currency)]
         public decimal Salary { get; set; }
 

@@ -26,6 +26,6 @@ namespace LinkDev.IKEA.DAL.Presistance.Data
 		}
 
 		public DbSet<Department> Departments { get; set; }
-		public DbSet<Employee> Set { get; set; }
+		public DbSet<Employee> Employees { get; set; }
 	}
 }

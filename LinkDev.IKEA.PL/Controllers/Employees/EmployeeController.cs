@@ -1,5 +1,6 @@
 ﻿using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.BLL.Models.Employee;
+using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.PL.Controllers.Department;
 using LinkDev.IKEA.PL.ViewModels.Departments;
@@ -12,12 +13,16 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 	{
 		#region Services
 
-		private readonly IEmployeeService _employesService;
-		private readonly ILogger _logger;
+	
+
+		private readonly IEmployeeService _employeeService;
+		private readonly ILogger<DepartmentController> _logger;
 		private readonly IWebHostEnvironment _webHostEnvironment;
-		public EmployeeController(EmployeeService employesService, ILogger<DepartmentController> logger, IWebHostEnvironment webHostEnvironment)
+
+
+		public EmployeeController(IEmployeeService employeeService, ILogger<DepartmentController> logger, IWebHostEnvironment webHostEnvironment)
 		{
-			_employesService = employesService;
+			_employeeService = employeeService;
 			_logger = logger;
 			_webHostEnvironment = webHostEnvironment;
 		}
@@ -31,7 +36,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 		public IActionResult Index()
 		{
-			var employees = _employesService.GetAllEmployees();
+			var employees = _employeeService.GetAllEmployees();
 			return View(employees);
 		}
 
@@ -54,7 +59,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			var message = string.Empty;
 			try
 			{
-				var result = _employesService.CreateEmployee(employeeDto);
+				var result = _employeeService.CreateEmployee(employeeDto);
 				if (result > 0)
 					return RedirectToAction(nameof(Index));
 				else
@@ -91,7 +96,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			{
 				return BadRequest();
 			}
-			var employee = _employesService.GetEmployeesById(id.Value);
+			var employee = _employeeService.GetEmployeesById(id.Value);
 			if (employee == null)
 			{
 				return NotFound();
@@ -103,6 +108,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 
 		#region Edit
+
 		[HttpGet]
 		public IActionResult Edit(int? id)
 		{
@@ -112,7 +118,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 				return BadRequest();
 			}
 
-			var employee = _employesService.GetEmployeesById(id.Value);
+			var employee = _employeeService.GetEmployeesById(id.Value);
 
 			// Check if department exists
 			if (employee == null)
@@ -125,7 +131,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			{
 				Id = employee.Id,
 				Name = employee.Name,
-				Address = employee.Adress,
+				Address = employee.Address,
 				EmailAddress = employee.EmailAddress,
 				Age = employee.Age,
 				Salary = employee.Salary,
@@ -139,7 +145,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 			});
 		}
-		
+
 		[HttpPost]
 		public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto emploee)
 		{
@@ -150,7 +156,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			var message = string.Empty;
 			try
 			{
-				var updated = _employesService.UpdateEmployee(emploee) > 0;
+				var updated = _employeeService.UpdateEmployee(emploee) > 0;
 				if (updated)
 				{
 					return RedirectToAction(nameof(Index));
@@ -173,6 +179,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 		#endregion
 
 
+		#region Delete
 
 		[HttpGet]
 		public IActionResult Delete(int? id)
@@ -181,7 +188,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			{
 				return BadRequest();
 			}
-			var department = _employesService.GetEmployeesById(id.Value);
+			var department = _employeeService.GetEmployeesById(id.Value);
 
 			if (department == null)
 			{
@@ -189,15 +196,15 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			}
 			return View(department);
 		}
-		[HttpPost]
 
+		[HttpPost]
 		public IActionResult Delete(int id)
 		{
 			var message = string.Empty;
 
 			try
 			{
-				var employee = _employesService.DeleteEmployee(id);
+				var employee = _employeeService.DeleteEmployee(id);
 				if (employee)
 				{
 					return RedirectToAction(nameof(Index));
@@ -217,5 +224,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			return RedirectToAction(nameof(Index));
 
 		}
+
+		#endregion
 	}
 }
