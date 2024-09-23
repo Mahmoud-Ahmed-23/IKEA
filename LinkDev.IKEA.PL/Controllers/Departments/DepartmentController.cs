@@ -63,7 +63,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				{
 					message = "Department is not Created";
 					ModelState.AddModelError(string.Empty, message);
-					return View(result);
+					return View(department);
 				}
 
 			}
@@ -173,19 +173,19 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		
 		#region Delete
 
-		[HttpGet]
-		public IActionResult Delete(int? id)
-		{
-			if (id is null)
-				return BadRequest();
+		//[HttpGet]
+		//public IActionResult Delete(int? id)
+		//{
+		//	if (id is null)
+		//		return BadRequest();
 
-			var department = _departmentService.GetDepartmentById(id.Value);
+		//	var department = _departmentService.GetDepartmentById(id.Value);
 
-			if (department is null)
-				return NotFound();
+		//	if (department is null)
+		//		return NotFound();
 
-			return View(department);
-		}
+		//	return View(department);
+		//}
 
 		[HttpPost]
 		public IActionResult Delete(int id)

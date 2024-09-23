@@ -66,7 +66,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 				{
 					message = "Employee is not Created";
 					ModelState.AddModelError(string.Empty, message);
-					return View(result);
+					return View(employeeDto);
 				}
 			}
 			catch (Exception ex)
@@ -181,21 +181,21 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 		#region Delete
 
-		[HttpGet]
-		public IActionResult Delete(int? id)
-		{
-			if (id == null)
-			{
-				return BadRequest();
-			}
-			var department = _employeeService.GetEmployeesById(id.Value);
+		//[HttpGet]
+		//public IActionResult Delete(int? id)
+		//{
+		//	if (id == null)
+		//	{
+		//		return BadRequest();
+		//	}
+		//	var department = _employeeService.GetEmployeesById(id.Value);
 
-			if (department == null)
-			{
-				return NotFound();
-			}
-			return View(department);
-		}
+		//	if (department == null)
+		//	{
+		//		return NotFound();
+		//	}
+		//	return View(department);
+		//}
 
 		[HttpPost]
 		public IActionResult Delete(int id)
@@ -204,19 +204,19 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 			try
 			{
-				var employee = _employeeService.DeleteEmployee(id);
-				if (employee)
+				var deleted = _employeeService.DeleteEmployee(id);
+				if (deleted)
 				{
 					return RedirectToAction(nameof(Index));
 				}
-				message = "an error has occured during deleting the emploee";
+				message = "an error has occured during deleting the employee";
 			}
 			catch (Exception ex)
 			{
 
 				_logger.LogError(ex, ex.Message);
 
-				message = _webHostEnvironment.IsDevelopment() ? ex.Message : "an error has occured during deleting the emploee";
+				message = _webHostEnvironment.IsDevelopment() ? ex.Message : "an error has occured during deleting the employee :(";
 			}
 			//ModelState.AddModelError(string.Empty, message);
 

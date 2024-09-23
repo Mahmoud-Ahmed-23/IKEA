@@ -16,7 +16,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
 		public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
 		{
-			var departments = _departmentRepositry.GetAll();
+			var departments = _departmentRepositry.GetAll().Where(d => !d.IsDeleted);
 
 			foreach (var department in departments)
 			{

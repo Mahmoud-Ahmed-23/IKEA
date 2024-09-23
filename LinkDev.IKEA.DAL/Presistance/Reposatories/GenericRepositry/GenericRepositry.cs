@@ -50,7 +50,8 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 
 		public int Delete(T entity)
 		{
-			_dbcontext.Set<T>().Remove(entity);
+			entity.IsDeleted = true;
+			_dbcontext.Set<T>().Update(entity);
 			return _dbcontext.SaveChanges();
 		}
 	}
