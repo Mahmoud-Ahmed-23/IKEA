@@ -1,10 +1,6 @@
-﻿using LinkDev.IKEA.BLL.Models.Department;
-using LinkDev.IKEA.BLL.Models.Employee;
-using LinkDev.IKEA.BLL.Services.Departments;
+﻿using LinkDev.IKEA.BLL.Models.Employee;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.PL.Controllers.Department;
-using LinkDev.IKEA.PL.ViewModels.Departments;
-using LinkDev.IKEA.PL.ViewModels.Employees;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers.Employees
@@ -47,10 +43,13 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 		#region Create
 
+		[HttpGet]
 		public IActionResult Create()
 		{
 			return View();
 		}
+
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Create(CreatedEmployeeDto employeeDto)
 		{
@@ -146,6 +145,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			});
 		}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto emploee)
 		{
@@ -197,6 +197,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 		//	return View(department);
 		//}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Delete(int id)
 		{

@@ -1,13 +1,11 @@
-﻿using LinkDev.IKEA.BLL.Models;
-using LinkDev.IKEA.BLL.Models.Department;
+﻿using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LinkDev.IKEA.PL.Controllers.Department
 {
-    public class DepartmentController : Controller
+	public class DepartmentController : Controller
 	{
 		#region Service
 
@@ -46,6 +44,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			return View();
 		}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Create(CreatedDepartmentDto department)
 		{
@@ -128,7 +127,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			});
 		}
 
-
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Edit(int id, DepartmentEditViewModel departmentVM)
 		{
@@ -170,7 +169,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		#endregion
 
-		
+
 		#region Delete
 
 		//[HttpGet]
@@ -187,6 +186,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		//	return View(department);
 		//}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Delete(int id)
 		{
