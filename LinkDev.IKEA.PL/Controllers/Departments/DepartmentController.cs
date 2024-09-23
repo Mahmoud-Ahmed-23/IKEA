@@ -46,7 +46,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Create(CreatedDepartmentDto department)
+		public IActionResult Create(DepartmentViewModel department)
 		{
 			if (!ModelState.IsValid)
 				return View(department);
@@ -54,7 +54,16 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			try
 			{
 
-				var result = _departmentService.CreateDepartment(department);
+				//var result = _departmentService.CreateDepartment(department);
+
+				var createdDepartment = new CreatedDepartmentDto
+				{
+					Code = department.Code,
+					Name = department.Name,
+					CreationDate = department.CreationDate,
+					Description = department.Description
+				};
+				var result = _departmentService.CreateDepartment(createdDepartment);
 
 				if (result > 0)
 					return RedirectToAction(nameof(Index));
@@ -118,7 +127,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			if (department is null)
 				return NotFound();
 
-			return View(new DepartmentEditViewModel()
+			return View(new DepartmentViewModel()
 			{
 				Code = department.Code,
 				Name = department.Name,
@@ -129,7 +138,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Edit(int id, DepartmentEditViewModel departmentVM)
+		public IActionResult Edit(int id, DepartmentViewModel departmentVM)
 		{
 			if (!ModelState.IsValid)
 				return View(departmentVM);
