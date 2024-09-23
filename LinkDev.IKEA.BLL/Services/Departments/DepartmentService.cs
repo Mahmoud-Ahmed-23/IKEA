@@ -1,11 +1,11 @@
-﻿using LinkDev.IKEA.BLL.Models;
+﻿using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.DAL.Entities;
 using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
-	public class DepartmentService : IDepartmentService
+    public class DepartmentService : IDepartmentService
 	{
 		private readonly IDepartmentRepositry _departmentRepositry;
 
@@ -16,12 +16,13 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
 		public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
 		{
-			var departments = _departmentRepositry.GetAll();
+			var departments = _departmentRepositry.GetAll().Where(d => !d.IsDeleted);
 
 			foreach (var department in departments)
 			{
 				yield return new DepartmentToReturnDto
 				{
+					Id = department.Id,
 					Name = department.Name,
 					Code = department.Code,
 					Description = department.Description,
