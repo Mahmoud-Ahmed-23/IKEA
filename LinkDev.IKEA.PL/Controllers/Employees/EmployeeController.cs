@@ -2,6 +2,7 @@
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.PL.Controllers.Department;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace LinkDev.IKEA.PL.Controllers.Employees
 {
@@ -9,7 +10,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 	{
 		#region Services
 
-	
+
 
 		private readonly IEmployeeService _employeeService;
 		private readonly ILogger<DepartmentController> _logger;
@@ -60,13 +61,11 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			{
 				var result = _employeeService.CreateEmployee(employeeDto);
 				if (result > 0)
-					return RedirectToAction(nameof(Index));
+					TempData["Created"] = $"Employee {employeeDto.Name} is Created";
 				else
-				{
-					message = "Employee is not Created";
-					ModelState.AddModelError(string.Empty, message);
-					return View(employeeDto);
-				}
+					TempData["Created"] = $"Employee {employeeDto.Name} is Not Created";
+
+				return RedirectToAction(nameof(Index));
 			}
 			catch (Exception ex)
 			{
@@ -147,22 +146,24 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto emploee)
+		public IActionResult Edit([FromRoute] int id, UpdatedEmployeeDto employee)
 		{
 			if (!ModelState.IsValid)
 			{
-				return View(emploee);
+				return View(employee);
 			}
 			var message = string.Empty;
 			try
 			{
-				var updated = _employeeService.UpdateEmployee(emploee) > 0;
+				var updated = _employeeService.UpdateEmployee(employee) > 0;
+
 				if (updated)
-				{
-					return RedirectToAction(nameof(Index));
-				}
+					TempData["Updated"] = $"Employee {employee.Name} is Updated";
+				else
+					TempData["Updated"] = $"Employee {employee.Name} is Not Updated";
 
 				message = "an error has occured during updating the employee";
+				return RedirectToAction(nameof(Index));
 			}
 			catch (Exception ex)
 			{
@@ -173,7 +174,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 			}
 			ModelState.AddModelError(string.Empty, message);
-			return View(emploee);
+			return View(employee);
 		}
 
 		#endregion
@@ -207,10 +208,13 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 			{
 				var deleted = _employeeService.DeleteEmployee(id);
 				if (deleted)
-				{
-					return RedirectToAction(nameof(Index));
-				}
+					TempData["Deleted"] = $"Employee {_employeeService.GetEmployeesById(id)?.Name} is Deleted";
+				else
+					TempData["Deleted"] = $"Employee {_employeeService.GetEmployeesById(id)?.Name} is Not Deleted";
+
+
 				message = "an error has occured during deleting the employee";
+				return RedirectToAction(nameof(Index));
 			}
 			catch (Exception ex)
 			{

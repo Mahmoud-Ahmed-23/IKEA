@@ -3,6 +3,57 @@
 	ViewData["Title"] = "Departments";
 }
 
+@if (!string.IsNullOrEmpty(TempData["Created"] as string))
+{
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+		<div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="..." class="rounded me-2" alt="...">
+				<strong class="me-auto">IKEA</strong>
+				<small>in @DateTime.Now.Hour:@DateTime.Now.Minute</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				@TempData["Created"]
+			</div>
+		</div>
+	</div>
+}
+
+@if (!string.IsNullOrEmpty(TempData["Deleted"] as string))
+{
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+		<div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="..." class="rounded me-2" alt="...">
+				<strong class="me-auto">IKEA</strong>
+				<small>in @DateTime.Now.Hour:@DateTime.Now.Minute</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				@TempData["Deleted"]
+			</div>
+		</div>
+	</div>
+}
+
+@if (!string.IsNullOrEmpty(TempData["Updated"] as string))
+{
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+		<div id="liveToast" class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast-header">
+				<img src="..." class="rounded me-2" alt="...">
+				<strong class="me-auto">IKEA</strong>
+				<small>in @DateTime.Now.Hour:@DateTime.Now.Minute</small>
+				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			</div>
+			<div class="toast-body">
+				@TempData["Updated"]
+			</div>
+		</div>
+	</div>
+}
+
 <h1>Departments</h1>
 
 <br />
@@ -60,7 +111,7 @@
 				</div>
 
 			}
-			
+
 
 		</tbody>
 	</table>

@@ -2,6 +2,7 @@
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace LinkDev.IKEA.PL.Controllers.Department
 {
@@ -66,13 +67,14 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				var result = _departmentService.CreateDepartment(createdDepartment);
 
 				if (result > 0)
-					return RedirectToAction(nameof(Index));
-				else
 				{
-					message = "Department is not Created";
-					ModelState.AddModelError(string.Empty, message);
-					return View(department);
+					TempData["Created"] = $"Department {department.Name} is Created";
 				}
+				else
+					TempData["Created"] = $"Department {department.Name} is not Created";
+
+
+				return RedirectToAction(nameof(Index));
 
 			}
 			catch (Exception ex)
@@ -160,9 +162,16 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				var Updated = _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
 
 				if (Updated)
-					return RedirectToAction("Index");
+				{
+					TempData["Updated"] = $"Department {departmentVM.Name} is Created";
+				}
+				else
+					TempData["Updated"] = $"Department {departmentVM.Name} is not Created";
 
 				message = "an error has occured during updating the deparment :(";
+
+				return RedirectToAction("Index");
+
 			}
 			catch (Exception ex)
 			{
@@ -207,9 +216,15 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				var deleted = _departmentService.DeleteDepartment(id);
 
 				if (deleted)
-					return RedirectToAction(nameof(Index));
+				{
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Deleted";
+				}
+				else
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Not Deleted";
+
 
 				message = "an error has occured during deleting the deparment :(";
+				return RedirectToAction(nameof(Index));
 
 			}
 			catch (Exception ex)
