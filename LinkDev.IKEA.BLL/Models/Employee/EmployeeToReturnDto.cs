@@ -19,12 +19,16 @@ namespace LinkDev.IKEA.BLL.Models.Employee
 
         [Display(Name = "Is Active")]
         public bool IsActive { get; set; }
+
         [EmailAddress]
         public string? EmailAddress { get; set; }
-
-
+        
+        
         public string Gender { get; set; } = null!;
 
         public string EmployeeType { get; set; } = null!;
-    }
+
+        
+		public string? Department { get; set; }
+	}
 }

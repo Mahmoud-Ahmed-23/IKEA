@@ -163,10 +163,10 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 				if (Updated)
 				{
-					TempData["Updated"] = $"Department {departmentVM.Name} is Created";
+					TempData["Updated"] = $"Department {departmentVM.Name} is Updated";
 				}
 				else
-					TempData["Updated"] = $"Department {departmentVM.Name} is not Created";
+					TempData["Updated"] = $"Department {departmentVM.Name} is not Updated";
 
 				message = "an error has occured during updating the deparment :(";
 
@@ -190,19 +190,19 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		#region Delete
 
-		//[HttpGet]
-		//public IActionResult Delete(int? id)
-		//{
-		//	if (id is null)
-		//		return BadRequest();
+		[HttpGet]
+		public IActionResult Delete(int? id)
+		{
+			if (id is null)
+				return BadRequest();
 
-		//	var department = _departmentService.GetDepartmentById(id.Value);
+			var department = _departmentService.GetDepartmentById(id.Value);
 
-		//	if (department is null)
-		//		return NotFound();
+			if (department is null)
+				return NotFound();
 
-		//	return View(department);
-		//}
+			return View(department);
+		}
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]

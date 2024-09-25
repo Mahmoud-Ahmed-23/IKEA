@@ -78,7 +78,7 @@
 
 				<th> @Html.DisplayNameFor(d => d.Name) </th>
 				<th> @Html.DisplayNameFor(d => d.EmailAddress) </th>
-
+				<th> @Html.DisplayNameFor(d => d.Department) </th>
 				<th> @Html.DisplayNameFor(d => d.Age) </th>
 				<th> @Html.DisplayNameFor(d => d.Salary) </th>
 				<th> @Html.DisplayNameFor(d => d.IsActive) </th>
@@ -106,6 +106,7 @@
 				<tr>
 					<td>@Html.DisplayFor(x => employee.Name)</td>
 					<td>@Html.DisplayFor(x => employee.EmailAddress)</td>
+					<td>@Html.DisplayFor(x => employee.Department)</td>
 					<td>@Html.DisplayFor(x => employee.Age)</td>
 					<td>@Html.DisplayFor(x => employee.Salary)</td>
 					<td>@Html.DisplayFor(x => employee.IsActive)</td>
@@ -118,7 +119,7 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h1 class="modal-title fs-5" id="deleteModalLabel-@employee.Id">Delete @employee.Name Department</h1>
+								<h1 class="modal-title fs-5" id="deleteModalLabel-@employee.Id">Delete @employee.Name</h1>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
 							<div class="modal-body">

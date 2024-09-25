@@ -32,7 +32,10 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 			return _dbcontext.Set<T>().AsNoTracking().ToList();
 
 		}
-
+		public IQueryable<T> GetAllIQueryable()
+		{
+			return _dbcontext.Set<T>();
+		}
 
 		public int Add(T entity)
 		{

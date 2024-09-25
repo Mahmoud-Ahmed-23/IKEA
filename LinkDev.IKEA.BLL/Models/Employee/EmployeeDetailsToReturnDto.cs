@@ -44,5 +44,8 @@ namespace LinkDev.IKEA.BLL.Models.Employee
         public DateOnly CreationDate { get; set; }
 
         public int CreatedBy { get; set; }
+
+        public string? Department { get; set; }
+        public int? DepartmentId { get; set; }
     }
 }

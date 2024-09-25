@@ -3,9 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LinkDev.IKEA.PL.ViewModels.Employees
 {
-	public class EmployeeEditViewModel
+	public class EmployeeViewModel
 	{
-		[Required]
+
+
+        [Required]
 		[MaxLength(50, ErrorMessage = "Max Length of Name is 50 Chars")]
 		[MinLength(5, ErrorMessage = "Min Length of Name is 5 Chars")]
 		public string Name { get; set; } = null!;
@@ -35,5 +37,10 @@ namespace LinkDev.IKEA.PL.ViewModels.Employees
 
         public EmployeeType EmployeeType { get; set; }
 
-	}
+		[Display(Name ="Deparment Name")]
+        public string? Department { get; set; }
+
+        public int? DepartmentId { get; set; }
+
+    }
 }
