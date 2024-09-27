@@ -33,9 +33,9 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
         [HttpGet]
 
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetEmployees(search);
             return View(employees);
         }
 
@@ -141,7 +141,7 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
                 PhoneNumber = employee.PhoneNumber,
                 EmployeeType = employee.EmployeeType,
                 Gender = employee.Gender,
-                DepartmentId = employee.DepartmentId
+                DepartmentId = employee.DepartmentId,
 
 
             });
