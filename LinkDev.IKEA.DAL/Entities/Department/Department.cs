@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using LinkDev.IKEA.DAL.Entities.Employees;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace LinkDev.IKEA.DAL.Entities.Department
         public string Name { get; set; } = null!;
         public string? Description { get; set; } = null!;
         public DateTime CreationDate { get; set; }
-    }
+
+		public virtual ICollection<Employee> Employess { get; set; } = new HashSet<Employee>();
+	}
 }

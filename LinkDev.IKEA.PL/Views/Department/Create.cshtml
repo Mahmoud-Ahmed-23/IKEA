@@ -1,44 +1,19 @@
-﻿@model CreatedDepartmentDto
+﻿@model DepartmentViewModel
 @{
-	ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create";
+    ViewBag.Action = "Create";
+	//var Departments = new SelectList(_departmentsevice.GetAllDepartments(), nameof(DepartmentToReturnDto.Id), nameof(DepartmentToReturnDto.Name));
 }
+
 
 <h1>Create Department</h1>
 
-<form action="/Department/Create" method="post">
+<partial name="Partials/CreateEditDepartmentPartial" />
 
 
-	<div class="form-group">
-		<label class="form-label" asp-for="Code"></label>
-		<input asp-for="Code" class="form-control" />
-		<span asp-validation-for="Code" class="text-danger"></span>
+@section ValidationScript {
 
-	</div>
-
-	<div class="form-group">
-		<label class="form-label" asp-for="Name"></label>
-		<input asp-for="Name" class="form-control" />
-		<span asp-validation-for="Name" class="text-danger"></span>
-
-	</div>
-
-	<div class="form-group">
-		<label class="form-label" asp-for="Description"></label>
-		<textarea asp-for="Description" class="form-control"></textarea>
-	</div>
-
-	<div class="form-group">
-		<label class="form-label" asp-for="CreationDate"></label>
-		<input asp-for="CreationDate" class="form-control" />
-
-	</div>
-
-	<div>
-		<input type="submit" value="Create" class="btn btn-primary" />
-		<a asp-action="Index" class="btn btn-light">Back to List</a>
-	</div>
-
-</form>
-
-
-
+	<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+	<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+	<partial name="_ValidationScriptsPartial" />
+}

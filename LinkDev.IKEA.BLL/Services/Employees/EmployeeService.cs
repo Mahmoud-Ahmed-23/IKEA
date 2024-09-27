@@ -1,7 +1,8 @@
 ﻿using LinkDev.IKEA.BLL.Models.Employee;
 using LinkDev.IKEA.DAL.Entities.Employees;
+using LinkDev.IKEA.DAL.Migrations;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
-
+using Microsoft.EntityFrameworkCore;
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
 	public class EmployeeService : IEmployeeService
@@ -18,7 +19,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 		public int CreateEmployee(CreatedEmployeeDto employeeDto)
 		{
 
-			var employee = new Employee()
+			var employee = new DAL.Entities.Employees.Employee()
 			{
 				Name = employeeDto.Name,
 				Age = employeeDto.Age,
@@ -32,7 +33,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				EmployeeType = employeeDto.EmployeeType,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
-				LastModifiedOn = DateTime.UtcNow
+				LastModifiedOn = DateTime.UtcNow,
+				DepartmentId = employeeDto.DepartmentId,
+
 
 			};
 
@@ -54,7 +57,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
 		public IEnumerable<EmployeeToReturnDto> GetAllEmployees()
 		{
-			return _employeeRepository.GetAll().Where(e => !e.IsDeleted).Select(employee => new EmployeeToReturnDto
+
+			return _employeeRepository.GetAllIQueryable().Where(e => !e.IsDeleted).Include(e => e.Department).Select(employee => new EmployeeToReturnDto
 			{
 				Id = employee.Id,
 				Name = employee.Name,
@@ -64,13 +68,14 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				EmailAddress = employee.EmailAddress,
 				Gender = employee.Gender.ToString(),
 				EmployeeType = employee.EmployeeType.ToString(),
+				Department = employee.Department.Name
 			});
 		}
 
 
 		public EmployeeDetailsToReturnDto? GetEmployeesById(int id)
 		{
-			var employee = _employeeRepository.Get(id); ;
+			var employee = _employeeRepository.Get(id);
 			if (employee is { })
 			{
 				return new EmployeeDetailsToReturnDto()
@@ -85,6 +90,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 					HiringDate = employee.HiringDate,
 					Gender = employee.Gender,
 					EmployeeType = employee.EmployeeType,
+					Department = employee.Department?.Name,
 
 				};
 			}
@@ -95,7 +101,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
 		public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
 		{
-			var employee = new Employee()
+			var employee = new DAL.Entities.Employees.Employee()
 			{
 				Id = employeeDto.Id,
 				Name = employeeDto.Name,
@@ -110,7 +116,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				EmployeeType = employeeDto.EmployeeType,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
-				LastModifiedOn = DateTime.UtcNow
+				LastModifiedOn = DateTime.UtcNow,
+				DepartmentId = employeeDto.DepartmentId,
 
 			};
 			return _employeeRepository.Update(employee);

@@ -2,16 +2,19 @@
 using LinkDev.IKEA.DAL.Entities;
 using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
+using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
-    public class DepartmentService : IDepartmentService
+	public class DepartmentService : IDepartmentService
 	{
 		private readonly IDepartmentRepositry _departmentRepositry;
+		private readonly IEmployeeRepositry _employeeRepositry;
 
-		public DepartmentService(IDepartmentRepositry departmentRepositry)
+		public DepartmentService(IDepartmentRepositry departmentRepositry, IEmployeeRepositry employeeRepositry)
 		{
 			_departmentRepositry = departmentRepositry;
+			_employeeRepositry = employeeRepositry;
 		}
 
 		public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
@@ -88,7 +91,18 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 			var department = _departmentRepositry.Get(id);
 
 			if (department is { })
+			{
+				var employees = _employeeRepositry.GetAllIQueryable().Where(e => e.Department == department);
+				
+				foreach(var employee in employees)
+				{
+					employee.DepartmentId = null;
+				}
+
+
 				return _departmentRepositry.Delete(department) > 0;
+
+			}
 			else
 				return false;
 		}

@@ -1,10 +1,5 @@
 ﻿using LinkDev.IKEA.DAL.Common.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Entities.Employees
 {
@@ -40,6 +35,7 @@ namespace LinkDev.IKEA.DAL.Entities.Employees
 
         public EmployeeType EmployeeType { get; set; }
 
-
-    }
+		public int? DepartmentId { get; set; }
+		public virtual Department.Department? Department { get; set; }
+	}
 }

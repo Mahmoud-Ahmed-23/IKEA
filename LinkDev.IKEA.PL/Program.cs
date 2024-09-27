@@ -4,6 +4,7 @@ using LinkDev.IKEA.DAL.Presistance.Data;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace LinkDev.IKEA.PL
 {
@@ -25,6 +26,7 @@ namespace LinkDev.IKEA.PL
 			builder.Services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
 			{
 				optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+				optionsBuilder.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 			});
 
 

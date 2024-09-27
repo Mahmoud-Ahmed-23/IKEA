@@ -1,13 +1,12 @@
-﻿using LinkDev.IKEA.BLL.Models;
-using LinkDev.IKEA.BLL.Models.Department;
+﻿using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace LinkDev.IKEA.PL.Controllers.Department
 {
-    public class DepartmentController : Controller
+	public class DepartmentController : Controller
 	{
 		#region Service
 
@@ -46,8 +45,9 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			return View();
 		}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Create(CreatedDepartmentDto department)
+		public IActionResult Create(DepartmentViewModel department)
 		{
 			if (!ModelState.IsValid)
 				return View(department);
@@ -55,16 +55,26 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			try
 			{
 
-				var result = _departmentService.CreateDepartment(department);
+				//var result = _departmentService.CreateDepartment(department);
+
+				var createdDepartment = new CreatedDepartmentDto
+				{
+					Code = department.Code,
+					Name = department.Name,
+					CreationDate = department.CreationDate,
+					Description = department.Description
+				};
+				var result = _departmentService.CreateDepartment(createdDepartment);
 
 				if (result > 0)
-					return RedirectToAction(nameof(Index));
-				else
 				{
-					message = "Department is not Created";
-					ModelState.AddModelError(string.Empty, message);
-					return View(department);
+					TempData["Created"] = $"Department {department.Name} is Created";
 				}
+				else
+					TempData["Created"] = $"Department {department.Name} is not Created";
+
+
+				return RedirectToAction(nameof(Index));
 
 			}
 			catch (Exception ex)
@@ -119,7 +129,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			if (department is null)
 				return NotFound();
 
-			return View(new DepartmentEditViewModel()
+			return View(new DepartmentViewModel()
 			{
 				Code = department.Code,
 				Name = department.Name,
@@ -128,9 +138,9 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			});
 		}
 
-
+		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Edit(int id, DepartmentEditViewModel departmentVM)
+		public IActionResult Edit(int id, DepartmentViewModel departmentVM)
 		{
 			if (!ModelState.IsValid)
 				return View(departmentVM);
@@ -152,9 +162,16 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				var Updated = _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
 
 				if (Updated)
-					return RedirectToAction("Index");
+				{
+					TempData["Updated"] = $"Department {departmentVM.Name} is Updated";
+				}
+				else
+					TempData["Updated"] = $"Department {departmentVM.Name} is not Updated";
 
 				message = "an error has occured during updating the deparment :(";
+
+				return RedirectToAction("Index");
+
 			}
 			catch (Exception ex)
 			{
@@ -170,23 +187,24 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		#endregion
 
-		
+
 		#region Delete
 
-		//[HttpGet]
-		//public IActionResult Delete(int? id)
-		//{
-		//	if (id is null)
-		//		return BadRequest();
+		[HttpGet]
+		public IActionResult Delete(int? id)
+		{
+			if (id is null)
+				return BadRequest();
 
-		//	var department = _departmentService.GetDepartmentById(id.Value);
+			var department = _departmentService.GetDepartmentById(id.Value);
 
-		//	if (department is null)
-		//		return NotFound();
+			if (department is null)
+				return NotFound();
 
-		//	return View(department);
-		//}
+			return View(department);
+		}
 
+		[ValidateAntiForgeryToken]
 		[HttpPost]
 		public IActionResult Delete(int id)
 		{
@@ -198,9 +216,15 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				var deleted = _departmentService.DeleteDepartment(id);
 
 				if (deleted)
-					return RedirectToAction(nameof(Index));
+				{
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Deleted";
+				}
+				else
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Not Deleted";
+
 
 				message = "an error has occured during deleting the deparment :(";
+				return RedirectToAction(nameof(Index));
 
 			}
 			catch (Exception ex)
