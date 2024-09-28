@@ -3,6 +3,7 @@ using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Presistance.Data;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
+using LinkDev.IKEA.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -16,6 +17,8 @@ namespace LinkDev.IKEA.PL
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+
+			builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfile()));
 
 			builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
 			builder.Services.AddScoped<IEmployeeRepositry, EmployeeRepositry>();

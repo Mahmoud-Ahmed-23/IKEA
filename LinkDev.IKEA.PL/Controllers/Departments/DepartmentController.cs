@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.BLL.Models.Department;
+﻿using AutoMapper;
+using LinkDev.IKEA.BLL.Models.Department;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.PL.ViewModels.Departments;
 using Microsoft.AspNetCore.Mvc;
@@ -13,13 +14,14 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		private readonly IDepartmentService _departmentService;
 		private readonly ILogger<DepartmentController> _logger;
 		private readonly IWebHostEnvironment _webHostEnvironment;
+		private readonly IMapper _mapper;
 
-
-		public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment webHostEnvironment)
+		public DepartmentController(IDepartmentService departmentService, ILogger<DepartmentController> logger, IWebHostEnvironment webHostEnvironment, IMapper mapper)
 		{
 			_departmentService = departmentService;
 			_logger = logger;
 			_webHostEnvironment = webHostEnvironment;
+			_mapper = mapper;
 		}
 
 		#endregion
@@ -57,13 +59,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 				//var result = _departmentService.CreateDepartment(department);
 
-				var createdDepartment = new CreatedDepartmentDto
-				{
-					Code = department.Code,
-					Name = department.Name,
-					CreationDate = department.CreationDate,
-					Description = department.Description
-				};
+				var createdDepartment = _mapper.Map<CreatedDepartmentDto>(department);
 				var result = _departmentService.CreateDepartment(createdDepartment);
 
 				if (result > 0)
@@ -129,13 +125,9 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			if (department is null)
 				return NotFound();
 
-			return View(new DepartmentViewModel()
-			{
-				Code = department.Code,
-				Name = department.Name,
-				Description = department.Description,
-				CreationDate = department.CreationDate,
-			});
+			var departmentVM = _mapper.Map<DepartmentViewModel>(department);
+
+			return View(departmentVM);
 		}
 
 		[ValidateAntiForgeryToken]
@@ -150,14 +142,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 			try
 			{
 
-				var UpdatedDepartment = new UpdatedDepartmentDto()
-				{
-					Id = id,
-					Code = departmentVM.Code,
-					Name = departmentVM.Name,
-					Description = departmentVM.Description,
-					CreationDate = departmentVM.CreationDate,
-				};
+				var UpdatedDepartment = _mapper.Map<UpdatedDepartmentDto>(departmentVM);
 
 				var Updated = _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
 
