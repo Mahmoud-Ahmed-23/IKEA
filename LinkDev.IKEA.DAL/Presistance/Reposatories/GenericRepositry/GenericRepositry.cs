@@ -37,25 +37,22 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 			return _dbcontext.Set<T>();
 		}
 
-		public int Add(T entity)
+		public void Add(T entity)
 		{
 			_dbcontext.Set<T>().Add(entity);
-			return _dbcontext.SaveChanges();
 		}
 
 
-		public int Update(T entity)
+		public void Update(T entity)
 		{
 			_dbcontext.Set<T>().Update(entity);
-			return _dbcontext.SaveChanges();
 		}
 
 
-		public int Delete(T entity)
+		public void Delete(T entity)
 		{
 			entity.IsDeleted = true;
 			_dbcontext.Set<T>().Update(entity);
-			return _dbcontext.SaveChanges();
 		}
 	}
 }

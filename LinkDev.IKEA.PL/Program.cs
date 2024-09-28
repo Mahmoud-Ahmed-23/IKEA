@@ -3,6 +3,7 @@ using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Presistance.Data;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
+using LinkDev.IKEA.DAL.Presistance.UnitOfWork;
 using LinkDev.IKEA.PL.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,7 @@ namespace LinkDev.IKEA.PL
 
 			builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
 			builder.Services.AddScoped<IEmployeeRepositry, EmployeeRepositry>();
+			builder.Services.AddScoped<IUnitOfWork, IUnitOfWork>();
 
 			builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();

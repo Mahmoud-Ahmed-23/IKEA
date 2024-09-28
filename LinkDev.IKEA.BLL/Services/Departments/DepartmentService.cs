@@ -3,23 +3,25 @@ using LinkDev.IKEA.DAL.Entities;
 using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Departments;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
+using LinkDev.IKEA.DAL.Presistance.UnitOfWork;
 
 namespace LinkDev.IKEA.BLL.Services.Departments
 {
 	public class DepartmentService : IDepartmentService
 	{
-		private readonly IDepartmentRepositry _departmentRepositry;
-		private readonly IEmployeeRepositry _employeeRepositry;
 
-		public DepartmentService(IDepartmentRepositry departmentRepositry, IEmployeeRepositry employeeRepositry)
+		private readonly IUnitOfWork _unitOfWork;
+
+		public DepartmentService(IUnitOfWork unitOfWork)
 		{
-			_departmentRepositry = departmentRepositry;
-			_employeeRepositry = employeeRepositry;
+			_unitOfWork = unitOfWork;
 		}
+
+
 
 		public IEnumerable<DepartmentToReturnDto> GetAllDepartments()
 		{
-			var departments = _departmentRepositry.GetAll().Where(d => !d.IsDeleted);
+			var departments = _unitOfWork.DepartmentRepositry.GetAll().Where(d => !d.IsDeleted);
 
 			foreach (var department in departments)
 			{
@@ -37,7 +39,7 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 
 		public DepartmentDetailsToReturnDto? GetDepartmentById(int id)
 		{
-			var department = _departmentRepositry.Get(id);
+			var department = _unitOfWork.DepartmentRepositry.Get(id);
 			if (department is { })
 				return new DepartmentDetailsToReturnDto
 				{
@@ -67,7 +69,10 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 				LastModifiedBy = 1,
 				LastModifiedOn = DepartmentDto.LastModifiedOn,
 			};
-			return _departmentRepositry.Add(department);
+			_unitOfWork.DepartmentRepositry.Add(department);
+
+			return _unitOfWork.Complete();
+
 		}
 
 		public int UpdateDepartment(UpdatedDepartmentDto DepartmentDto)
@@ -83,28 +88,29 @@ namespace LinkDev.IKEA.BLL.Services.Departments
 				LastModifiedBy = 1,
 				LastModifiedOn = DepartmentDto.LastModifiedOn,
 			};
-			return _departmentRepositry.Update(department);
+			_unitOfWork.DepartmentRepositry.Update(department);
+			return _unitOfWork.Complete();
 		}
 
 		public bool DeleteDepartment(int id)
 		{
-			var department = _departmentRepositry.Get(id);
+			var department = _unitOfWork.DepartmentRepositry.Get(id);
 
 			if (department is { })
 			{
-				var employees = _employeeRepositry.GetAllIQueryable().Where(e => e.Department == department);
-				
-				foreach(var employee in employees)
+				var employees = _unitOfWork.EmployeeRepositry.GetAllIQueryable().Where(e => e.Department == department);
+
+				foreach (var employee in employees)
 				{
 					employee.DepartmentId = null;
 				}
 
 
-				return _departmentRepositry.Delete(department) > 0;
+				_unitOfWork.DepartmentRepositry.Delete(department);
 
 			}
-			else
-				return false;
+
+			return _unitOfWork.Complete() > 0;
 		}
 
 	}

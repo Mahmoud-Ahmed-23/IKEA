@@ -1,17 +1,18 @@
 ﻿using LinkDev.IKEA.BLL.Models.Employee;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
+using LinkDev.IKEA.DAL.Presistance.UnitOfWork;
 
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
 	public class EmployeeService : IEmployeeService
 	{
 
-		private readonly IEmployeeRepositry _employeeRepository;
+		private readonly IUnitOfWork _unitOfWork;
 
-		public EmployeeService(IEmployeeRepositry employeeRepository)
+		public EmployeeService(IUnitOfWork unitOfWork)
 		{
-			_employeeRepository = employeeRepository;
+			_unitOfWork = unitOfWork;
 		}
 
 
@@ -35,26 +36,28 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				LastModifiedOn = DateTime.UtcNow
 
 			};
+			
+			_unitOfWork.EmployeeRepositry.Add(employee);
 
-			return _employeeRepository.Add(employee);
+			return _unitOfWork.Complete();
 		}
 
 
 		public bool DeleteEmployee(int id)
 		{
-			var employee = _employeeRepository.Get(id);
+			var employee = _unitOfWork.EmployeeRepositry.Get(id);
 			if (employee is { })
 			{
-				return _employeeRepository.Delete(employee) > 0;
+				_unitOfWork.EmployeeRepositry.Delete(employee);
 			}
 
-			return false;
+			return _unitOfWork.Complete() > 0;
 		}
 
 
 		public IEnumerable<EmployeeToReturnDto> GetEmployees(string search)
 		{
-			return _employeeRepository.GetAll().Where(e => !e.IsDeleted && (string.IsNullOrEmpty(search) || e.Name.ToLower().Contains(search.ToLower()))).Select(employee => new EmployeeToReturnDto
+			return _unitOfWork.EmployeeRepositry.GetAll().Where(e => !e.IsDeleted && (string.IsNullOrEmpty(search) || e.Name.ToLower().Contains(search.ToLower()))).Select(employee => new EmployeeToReturnDto
 			{
 				Id = employee.Id,
 				Name = employee.Name,
@@ -70,7 +73,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 
 		public EmployeeDetailsToReturnDto? GetEmployeesById(int id)
 		{
-			var employee = _employeeRepository.Get(id); ;
+			var employee = _unitOfWork.EmployeeRepositry.Get(id); ;
 			if (employee is { })
 			{
 				return new EmployeeDetailsToReturnDto()
@@ -113,7 +116,10 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				LastModifiedOn = DateTime.UtcNow
 
 			};
-			return _employeeRepository.Update(employee);
+			
+			_unitOfWork.EmployeeRepositry.Update(employee);
+
+			return _unitOfWork.Complete();
 		}
 
 
