@@ -22,13 +22,14 @@ namespace LinkDev.IKEA.DAL.Presistance.UnitOfWork
 		public IEmployeeRepositry EmployeeRepositry => new EmployeeRepositry(_dbContext);
 		public IDepartmentRepositry DepartmentRepositry => new DepartmentRepositry(_dbContext);
 
-		public int Complete()
+		public async Task<int> CompleteAsync()
 		{
-			return _dbContext.SaveChanges();
+			return await _dbContext.SaveChangesAsync();
 		}
-		public void Dispose()
+		public async ValueTask DisposeAsync()
 		{
-			_dbContext.Dispose();
+			await _dbContext.DisposeAsync();
 		}
+
 	}
 }

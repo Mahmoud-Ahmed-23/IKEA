@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Presistance.UnitOfWork
 {
-	public interface IUnitOfWork : IDisposable
+	public interface IUnitOfWork : IAsyncDisposable
 	{
 		IEmployeeRepositry EmployeeRepositry { get; }
 		IDepartmentRepositry DepartmentRepositry { get; }
-		int Complete();
+		Task<int> CompleteAsync();
 
 	}
 }

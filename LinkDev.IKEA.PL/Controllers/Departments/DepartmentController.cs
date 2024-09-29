@@ -30,9 +30,9 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		#region Index
 
 		[HttpGet]
-		public IActionResult Index()
+		public async Task<IActionResult> Index()
 		{
-			var deparments = _departmentService.GetAllDepartments();
+			var deparments = await _departmentService.GetAllDepartmentsAsync();
 			return View(deparments);
 		}
 
@@ -49,7 +49,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Create(DepartmentViewModel department)
+		public async Task<IActionResult> Create(DepartmentViewModel department)
 		{
 			if (!ModelState.IsValid)
 				return View(department);
@@ -60,7 +60,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 				//var result = _departmentService.CreateDepartment(department);
 
 				var createdDepartment = _mapper.Map<CreatedDepartmentDto>(department);
-				var result = _departmentService.CreateDepartment(createdDepartment);
+				var result = await _departmentService.CreateDepartmentAsync(createdDepartment);
 
 				if (result > 0)
 				{
@@ -96,12 +96,12 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		#region Details
 
 		[HttpGet]
-		public IActionResult Details(int? id)
+		public async Task<IActionResult> Details(int? id)
 		{
 			if (id is null)
 				return BadRequest();
 
-			var department = _departmentService.GetDepartmentById(id.Value);
+			var department = await _departmentService.GetDepartmentByIdAsync(id.Value);
 
 			if (department is null)
 				return NotFound();
@@ -115,12 +115,12 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		#region Edit
 
 		[HttpGet]
-		public IActionResult Edit(int? id)
+		public async Task<IActionResult> Edit(int? id)
 		{
 			if (id is null)
 				return BadRequest();
 
-			var department = _departmentService.GetDepartmentById(id.Value);
+			var department = await _departmentService.GetDepartmentByIdAsync(id.Value);
 
 			if (department is null)
 				return NotFound();
@@ -132,7 +132,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Edit(int id, DepartmentViewModel departmentVM)
+		public async Task<IActionResult> Edit(int id, DepartmentViewModel departmentVM)
 		{
 			if (!ModelState.IsValid)
 				return View(departmentVM);
@@ -144,7 +144,7 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 				var UpdatedDepartment = _mapper.Map<UpdatedDepartmentDto>(departmentVM);
 
-				var Updated = _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
+				var Updated = await _departmentService.UpdateDepartment(UpdatedDepartment) > 0;
 
 				if (Updated)
 				{
@@ -176,12 +176,12 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 		#region Delete
 
 		[HttpGet]
-		public IActionResult Delete(int? id)
+		public async Task<IActionResult> Delete(int? id)
 		{
 			if (id is null)
 				return BadRequest();
 
-			var department = _departmentService.GetDepartmentById(id.Value);
+			var department = await _departmentService.GetDepartmentByIdAsync(id.Value);
 
 			if (department is null)
 				return NotFound();
@@ -191,21 +191,21 @@ namespace LinkDev.IKEA.PL.Controllers.Department
 
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public IActionResult Delete(int id)
+		public async Task<IActionResult> Delete(int id)
 		{
 			var message = string.Empty;
 
 			try
 			{
 
-				var deleted = _departmentService.DeleteDepartment(id);
+				var deleted = await _departmentService.DeleteDepartmentAsync(id);
 
 				if (deleted)
 				{
-					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Deleted";
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentByIdAsync(id).Result?.Name} is Deleted";
 				}
 				else
-					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentById(id)?.Name} is Not Deleted";
+					TempData["Deleted"] = $"Department {_departmentService.GetDepartmentByIdAsync(id).Result?.Name} is Not Deleted";
 
 
 				message = "an error has occured during deleting the deparment :(";

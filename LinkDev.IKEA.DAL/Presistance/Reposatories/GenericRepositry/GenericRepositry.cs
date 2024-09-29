@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 {
-	public class GenericRepositry<T> where T : ModelBase
+	public class GenericRepositry<T> : IGenericRepositry<T> where T : ModelBase
 	{
 		private readonly ApplicationDbContext _dbcontext;
 
@@ -19,17 +19,17 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 			_dbcontext = dbcontext;
 		}
 
-		public T? Get(int id)
+		public async Task<T?> GetAsync(int id)
 		{
-			return _dbcontext.Set<T>().Find(id);
+			return await _dbcontext.Set<T>().FindAsync(id);
 		}
 
-		public IEnumerable<T> GetAll(bool AsNoTracking = true)
+		public async Task<IEnumerable<T>> GetAllAsync(bool AsNoTracking = true)
 		{
 			if (AsNoTracking)
-				return _dbcontext.Set<T>().ToList();
+				return await _dbcontext.Set<T>().ToListAsync();
 
-			return _dbcontext.Set<T>().AsNoTracking().ToList();
+			return await _dbcontext.Set<T>().AsNoTracking().ToListAsync();
 
 		}
 		public IQueryable<T> GetAllIQueryable()
@@ -37,9 +37,9 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 			return _dbcontext.Set<T>();
 		}
 
-		public void Add(T entity)
+		public async Task AddAsync(T entity)
 		{
-			_dbcontext.Set<T>().Add(entity);
+			await _dbcontext.Set<T>().AddAsync(entity);
 		}
 
 
@@ -54,5 +54,7 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 			entity.IsDeleted = true;
 			_dbcontext.Set<T>().Update(entity);
 		}
+
+
 	}
 }

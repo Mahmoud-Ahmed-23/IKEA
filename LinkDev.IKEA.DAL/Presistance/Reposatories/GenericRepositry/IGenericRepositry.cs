@@ -9,10 +9,10 @@ namespace LinkDev.IKEA.DAL.Presistance.Reposatories.GenericRepositry
 {
 	public interface IGenericRepositry<T> where T : ModelBase
 	{
-		IEnumerable<T> GetAll(bool AsNoTracking = true);
+		Task<IEnumerable<T>> GetAllAsync(bool AsNoTracking = true);
 		IQueryable<T> GetAllIQueryable();
-		T? Get(int id);
-		void Add(T department);
+		Task<T>? GetAsync(int id);
+		Task AddAsync(T department);
 		void Update(T department);
 		void Delete(T department);
 
