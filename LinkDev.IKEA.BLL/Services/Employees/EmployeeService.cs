@@ -1,4 +1,5 @@
-﻿using LinkDev.IKEA.BLL.Models.Employee;
+﻿using LinkDev.IKEA.BLL.Common.Attchments;
+using LinkDev.IKEA.BLL.Models.Employee;
 using LinkDev.IKEA.DAL.Entities.Employees;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
 using LinkDev.IKEA.DAL.Presistance.UnitOfWork;
@@ -9,10 +10,12 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 	{
 
 		private readonly IUnitOfWork _unitOfWork;
+		private readonly IAttachmentService _attachmentService;
 
-		public EmployeeService(IUnitOfWork unitOfWork)
+		public EmployeeService(IUnitOfWork unitOfWork, IAttachmentService attachmentService)
 		{
 			_unitOfWork = unitOfWork;
+			_attachmentService = attachmentService;
 		}
 
 
@@ -33,10 +36,14 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				EmployeeType = employeeDto.EmployeeType,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
-				LastModifiedOn = DateTime.UtcNow
+				LastModifiedOn = DateTime.UtcNow,
 
 			};
-			
+
+			if (employeeDto.Image != null)
+				employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+
+
 			_unitOfWork.EmployeeRepositry.Add(employee);
 
 			return _unitOfWork.Complete();
@@ -88,7 +95,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 					HiringDate = employee.HiringDate,
 					Gender = employee.Gender,
 					EmployeeType = employee.EmployeeType,
-
+					Image = employee.Image
 				};
 			}
 			else
@@ -111,12 +118,12 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				HiringDate = employeeDto.HiringDate,
 				Gender = employeeDto.Gender,
 				EmployeeType = employeeDto.EmployeeType,
+				Image = employeeDto.Image,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
-				LastModifiedOn = DateTime.UtcNow
-
+				LastModifiedOn = DateTime.UtcNow,
 			};
-			
+
 			_unitOfWork.EmployeeRepositry.Update(employee);
 
 			return _unitOfWork.Complete();

@@ -1,3 +1,4 @@
+using LinkDev.IKEA.BLL.Common.Attchments;
 using LinkDev.IKEA.BLL.Services.Departments;
 using LinkDev.IKEA.BLL.Services.Employees;
 using LinkDev.IKEA.DAL.Presistance.Data;
@@ -23,10 +24,11 @@ namespace LinkDev.IKEA.PL
 
 			builder.Services.AddScoped<IDepartmentRepositry, DepartmentRepositry>();
 			builder.Services.AddScoped<IEmployeeRepositry, EmployeeRepositry>();
-			builder.Services.AddScoped<IUnitOfWork, IUnitOfWork>();
+			builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 			builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 			builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+			builder.Services.AddScoped<IAttachmentService, AttachmentService>();
 
 			builder.Services.AddDbContext<ApplicationDbContext>(optionsBuilder =>
 			{
