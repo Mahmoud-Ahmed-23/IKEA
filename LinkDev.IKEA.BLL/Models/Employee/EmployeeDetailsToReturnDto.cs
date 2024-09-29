@@ -18,7 +18,7 @@ namespace LinkDev.IKEA.BLL.Models.Employee
 
         public string? Address { get; set; }
 
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency)] 
         public decimal Salary { get; set; }
 
         [Display(Name = "Is Active")]

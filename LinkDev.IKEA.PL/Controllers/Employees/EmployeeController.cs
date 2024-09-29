@@ -129,7 +129,22 @@ namespace LinkDev.IKEA.PL.Controllers.Employees
 
 			ViewData["Departments"] = departmentService.GetAllDepartments();
 
-			var UpdatedEmployee = _mapper.Map<UpdatedDepartmentDto>(employee);
+			var UpdatedEmployee = new UpdatedEmployeeDto
+			{
+				Id = employee.Id,
+				Name = employee.Name,
+				Address = employee.Address,
+				Age = employee.Age,
+				EmployeeType = employee.EmployeeType,
+				Image = employee.Image,
+				DepartmentId = employee.DepartmentId,
+				EmailAddress = employee.EmailAddress,
+				Gender = employee.Gender,
+				HiringDate = employee.HiringDate,
+				IsActive = employee.IsActive,
+				PhoneNumber = employee.PhoneNumber,
+				Salary = employee.Salary,
+			};
 
 			// Pass the fetched department data to the view
 			return View(employee);
