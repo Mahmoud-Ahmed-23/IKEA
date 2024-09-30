@@ -67,6 +67,21 @@
 
 <br />
 
+<form asp-action="Index" method="get" class="mt-5 row justify-content-center align-content-center">
+
+	<div class="row col-8 container-fluid justify-content-start">
+
+		<div class="col-8">
+			<input type="text" name="search" class="form-control" id="searchInp" placeholder="Search By Name" />
+		</div>
+		<div class="col-4">
+			<input type="submit" value="Search" class="btn btn-outline-success" />
+		</div>
+
+	</div>
+
+</form>
+
 @if (Model.Count() > 0)
 {
 	<table class=" mt-4 table table-striped table-hover">

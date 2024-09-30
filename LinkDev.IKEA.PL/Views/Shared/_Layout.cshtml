@@ -19,21 +19,30 @@
 					<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-					<ul class="navbar-nav flex-grow-1">
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
-						</li>
-					</ul>
+					@* <ul class="navbar-nav flex-grow-1">
+					<li class="nav-item">
+					<a class="nav-link text-outline-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link text-outline-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link text-outline-dark" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
+					</li>
+					<li class="nav-item">
+					<a class="nav-link text-outline-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employees</a>
+					</li>
+					</ul> *@
+					<form class="container-fluid justify-content-start">
+						<a class="btn btn-outline-success me-2"     type="button" asp-area="" asp-controller="Home"       asp-action="Index">Home</a>
+						<a class="btn btn-sm btn-outline-secondary" type="button" asp-area="" asp-controller="Home"       asp-action="Privacy">Privacy</a>
+						<a class="btn btn-sm btn-outline-secondary" type="button" asp-area="" asp-controller="Department" asp-action="Index">Departments</a>
+						<a class="btn btn-sm btn-outline-secondary" type="button" asp-area="" asp-controller="Employee"   asp-action="Index">Employees</a>
+						<a class="btn btn-sm btn-outline-secondary justify-content-end align-items-end" type="button"     asp-area="" asp-controller="Account" asp-action="SignUp">SignUp</a>
+					</form>
 				</div>
+
+
 			</div>
 		</nav>
 	</header>

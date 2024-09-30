@@ -1,25 +1,29 @@
-﻿using LinkDev.IKEA.BLL.Models.Employee;
+﻿using LinkDev.IKEA.BLL.Common.Attchments;
+using LinkDev.IKEA.BLL.Models.Employee;
 using LinkDev.IKEA.DAL.Entities.Employees;
-using LinkDev.IKEA.DAL.Migrations;
 using LinkDev.IKEA.DAL.Presistance.Reposatories.Employees;
+using LinkDev.IKEA.DAL.Presistance.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
+
 namespace LinkDev.IKEA.BLL.Services.Employees
 {
 	public class EmployeeService : IEmployeeService
 	{
 
-		private readonly IEmployeeRepositry _employeeRepository;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IAttachmentService _attachmentService;
 
-		public EmployeeService(IEmployeeRepositry employeeRepository)
+		public EmployeeService(IUnitOfWork unitOfWork, IAttachmentService attachmentService)
 		{
-			_employeeRepository = employeeRepository;
+			_unitOfWork = unitOfWork;
+			_attachmentService = attachmentService;
 		}
 
 
-		public int CreateEmployee(CreatedEmployeeDto employeeDto)
+		public async Task<int> CreateEmployeeAsync(CreatedEmployeeDto employeeDto)
 		{
 
-			var employee = new DAL.Entities.Employees.Employee()
+			var employee = new Employee()
 			{
 				Name = employeeDto.Name,
 				Age = employeeDto.Age,
@@ -31,34 +35,38 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				HiringDate = employeeDto.HiringDate,
 				Gender = employeeDto.Gender,
 				EmployeeType = employeeDto.EmployeeType,
+				DepartmentId = employeeDto.DepartmentId,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
 				LastModifiedOn = DateTime.UtcNow,
-				DepartmentId = employeeDto.DepartmentId,
-
 
 			};
 
-			return _employeeRepository.Add(employee);
+			if (employeeDto.Image != null)
+				employee.Image = await _attachmentService.Upload(employeeDto.Image, "files");
+
+
+			await _unitOfWork.EmployeeRepositry.AddAsync(employee);
+
+			return await _unitOfWork.CompleteAsync();
 		}
 
 
-		public bool DeleteEmployee(int id)
+		public async Task<bool> DeleteEmployeeAsync(int id)
 		{
-			var employee = _employeeRepository.Get(id);
+			var employee = await _unitOfWork.EmployeeRepositry.GetAsync(id);
 			if (employee is { })
 			{
-				return _employeeRepository.Delete(employee) > 0;
+				_unitOfWork.EmployeeRepositry.Delete(employee);
 			}
 
-			return false;
+			return await _unitOfWork.CompleteAsync() > 0;
 		}
 
 
-		public IEnumerable<EmployeeToReturnDto> GetAllEmployees()
+		public async Task<IEnumerable<EmployeeToReturnDto>> GetEmployeesAsync(string search)
 		{
-
-			return _employeeRepository.GetAllIQueryable().Where(e => !e.IsDeleted).Include(e => e.Department).Select(employee => new EmployeeToReturnDto
+			return await _unitOfWork.EmployeeRepositry.GetAllIQueryable().Where(e => !e.IsDeleted && (string.IsNullOrEmpty(search) || e.Name.ToLower().Contains(search.ToLower()))).Select(employee => new EmployeeToReturnDto
 			{
 				Id = employee.Id,
 				Name = employee.Name,
@@ -68,14 +76,14 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				EmailAddress = employee.EmailAddress,
 				Gender = employee.Gender.ToString(),
 				EmployeeType = employee.EmployeeType.ToString(),
-				Department = employee.Department.Name
-			});
+				Department = employee.Department.Name,
+			}).ToListAsync();
 		}
 
 
-		public EmployeeDetailsToReturnDto? GetEmployeesById(int id)
+		public async Task<EmployeeDetailsToReturnDto?> GetEmployeesByIdAsync(int id)
 		{
-			var employee = _employeeRepository.Get(id);
+			var employee = await _unitOfWork.EmployeeRepositry.GetAsync(id); ;
 			if (employee is { })
 			{
 				return new EmployeeDetailsToReturnDto()
@@ -90,8 +98,8 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 					HiringDate = employee.HiringDate,
 					Gender = employee.Gender,
 					EmployeeType = employee.EmployeeType,
-					Department = employee.Department?.Name,
-
+					Image = employee.Image,
+					DepartmentId = employee.DepartmentId,
 				};
 			}
 			else
@@ -99,9 +107,9 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 		}
 
 
-		public int UpdateEmployee(UpdatedEmployeeDto employeeDto)
+		public async Task<int> UpdateEmployeeAsync(UpdatedEmployeeDto employeeDto)
 		{
-			var employee = new DAL.Entities.Employees.Employee()
+			var employee = new Employee()
 			{
 				Id = employeeDto.Id,
 				Name = employeeDto.Name,
@@ -114,13 +122,16 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 				HiringDate = employeeDto.HiringDate,
 				Gender = employeeDto.Gender,
 				EmployeeType = employeeDto.EmployeeType,
+				DepartmentId = employeeDto.DepartmentId,
+				Image = employeeDto.Image,
 				CreatedBy = 1,
 				LastModifiedBy = 1,
 				LastModifiedOn = DateTime.UtcNow,
-				DepartmentId = employeeDto.DepartmentId,
-
 			};
-			return _employeeRepository.Update(employee);
+
+			_unitOfWork.EmployeeRepositry.Update(employee);
+
+			return await _unitOfWork.CompleteAsync();
 		}
 
 

@@ -1,5 +1,7 @@
-﻿using LinkDev.IKEA.DAL.Entities.Department;
+﻿using LinkDev.IKEA.DAL.Entites.Identity;
+using LinkDev.IKEA.DAL.Entities.Department;
 using LinkDev.IKEA.DAL.Entities.Employees;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,18 +12,20 @@ using System.Threading.Tasks;
 
 namespace LinkDev.IKEA.DAL.Presistance.Data
 {
-	public class ApplicationDbContext : DbContext
+	public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 	{
 		//protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		//{
 		//	optionsBuilder.UseSqlServer("Server = .; Database = IKEA; Trusted_Connection = True; TrustServerCertificate = True");
 		//}
+
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
 		{
 		}
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			base.OnModelCreating(modelBuilder);
 			modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 		}
 

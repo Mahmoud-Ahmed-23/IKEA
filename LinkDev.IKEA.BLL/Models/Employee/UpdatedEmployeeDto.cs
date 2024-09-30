@@ -17,7 +17,7 @@ namespace LinkDev.IKEA.BLL.Models.Employee
         public string Name { get; set; } = null!;
 
         [Range(22, 30)]
-        public int? Age { get; set; }
+        public int? Age { get; set; } 
 
         public string? Address { get; set; }
 
@@ -43,5 +43,8 @@ namespace LinkDev.IKEA.BLL.Models.Employee
 
 		[Display(Name = "Department")]
 		public int? DepartmentId { get; set; }
+
+		public string? Image { get; set; }
+
 	}
 }
