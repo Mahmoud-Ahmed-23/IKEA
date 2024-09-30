@@ -58,6 +58,25 @@ namespace LinkDev.IKEA.PL
 
 			}).AddEntityFrameworkStores<ApplicationDbContext>();
 
+			builder.Services.ConfigureApplicationCookie(options =>
+			{
+				options.LoginPath = "/Account/SignIn";
+				options.LogoutPath = "/Account/SignIn";
+				options.AccessDeniedPath = "/Home/Error";
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+			});
+
+			builder.Services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = "Identity.Application";
+				options.DefaultChallengeScheme = "Identity.Application";
+			}).AddCookie("Hamada", ".AspNetCore.Hamada", options =>
+			{
+				options.LoginPath = "/Account/SignIn";
+				options.LogoutPath = "/Account/SignIn";
+				options.AccessDeniedPath = "/Home/Error";
+				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+			});
 
 			var app = builder.Build();
 
@@ -73,6 +92,8 @@ namespace LinkDev.IKEA.PL
 			app.UseStaticFiles();
 
 			app.UseRouting();
+
+			app.UseAuthorization();
 
 			app.UseAuthorization();
 
