@@ -61,10 +61,11 @@ namespace LinkDev.IKEA.PL
 			builder.Services.ConfigureApplicationCookie(options =>
 			{
 				options.LoginPath = "/Account/SignIn";
-				options.LogoutPath = "/Account/SignIn";
 				options.AccessDeniedPath = "/Home/Error";
 				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 			});
+
+
 
 			builder.Services.AddAuthentication(options =>
 			{
@@ -73,7 +74,6 @@ namespace LinkDev.IKEA.PL
 			}).AddCookie("Hamada", ".AspNetCore.Hamada", options =>
 			{
 				options.LoginPath = "/Account/SignIn";
-				options.LogoutPath = "/Account/SignIn";
 				options.AccessDeniedPath = "/Home/Error";
 				options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 			});
@@ -93,7 +93,7 @@ namespace LinkDev.IKEA.PL
 
 			app.UseRouting();
 
-			app.UseAuthorization();
+			app.UseAuthentication();
 
 			app.UseAuthorization();
 

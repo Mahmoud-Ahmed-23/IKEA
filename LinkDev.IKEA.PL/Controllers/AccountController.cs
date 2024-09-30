@@ -77,7 +77,7 @@ namespace LinkDev.IKEA.PL.Controllers
 				{
 					var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
-					
+
 					if (result.IsNotAllowed)
 						ModelState.AddModelError(string.Empty, "Your Account is not confirmed yet!!");
 
@@ -96,6 +96,14 @@ namespace LinkDev.IKEA.PL.Controllers
 			return View(model);
 		}
 
+
+
+		public new async Task<IActionResult> SignOut()
+		{
+			await _signInManager.SignOutAsync();
+
+			return RedirectToAction(nameof(SignIn));
+		}
 	}
 }
 

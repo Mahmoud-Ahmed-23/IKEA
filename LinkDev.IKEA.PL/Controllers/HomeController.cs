@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace LinkDev.IKEA.PL.Controllers
 {
-	[Authorize(AuthenticationSchemes = "Hamada")]
+	[Authorize]
 	public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
