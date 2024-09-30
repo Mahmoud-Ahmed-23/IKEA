@@ -11,7 +11,7 @@ namespace LinkDev.IKEA.BLL.Common.Attchments
 	{
 		private readonly List<string> _allowedExtentions = new() { ".png", ".jpg", ".jpeg" };
 		private const int _allowedMaxSize = 2_097_152;
-		public string? Upload(IFormFile file, string folderName)
+		public async Task<string?> Upload(IFormFile file, string folderName)
 		{
 			var extention = Path.GetExtension(file.FileName);
 
@@ -34,7 +34,7 @@ namespace LinkDev.IKEA.BLL.Common.Attchments
 
 			using var fileStream = new FileStream(filePath, FileMode.Create);
 
-			file.CopyTo(fileStream);
+			await file.CopyToAsync(fileStream);
 
 			return fileName;
 		}

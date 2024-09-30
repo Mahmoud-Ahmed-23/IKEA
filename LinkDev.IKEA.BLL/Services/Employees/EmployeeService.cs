@@ -43,7 +43,7 @@ namespace LinkDev.IKEA.BLL.Services.Employees
 			};
 
 			if (employeeDto.Image != null)
-				employee.Image = _attachmentService.Upload(employeeDto.Image, "images");
+				employee.Image = await _attachmentService.Upload(employeeDto.Image, "files");
 
 
 			await _unitOfWork.EmployeeRepositry.AddAsync(employee);
